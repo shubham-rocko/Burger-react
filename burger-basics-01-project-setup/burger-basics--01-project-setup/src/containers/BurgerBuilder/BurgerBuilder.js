@@ -100,7 +100,16 @@ class BurgerBuilder extends Component {
     //     this.setState({ loading: false, purchasing: false });
     //   });
     // alert('You Continue!!!');
-    this.props.history.push('/checkout');
+
+    var queryParams = [];
+    for(let i in this.state.ingredients){
+      queryParams.push(`${encodeURIComponent(i)}=${this.state.ingredients[i]}`);
+    }
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?${queryString}`
+    });
   }
 
   componentDidMount() {

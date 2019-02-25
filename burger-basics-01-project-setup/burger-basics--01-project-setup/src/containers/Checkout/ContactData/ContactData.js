@@ -83,8 +83,8 @@ class ContactData extends Component {
     }
 
     render() {
-        let formElementsArray = [];
-        for(let key of this.state.orderForm){
+        const formElementsArray = [];
+        for (let key in this.state.orderForm) {
             formElementsArray.push({
                 id: key,
                 config: this.state.orderForm[key]
@@ -93,11 +93,11 @@ class ContactData extends Component {
 
         var form = (<form>
             {formElementsArray.map(formElement => (
-                <Input 
-                key = {formElement.id}
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value} />
+                <Input
+                    key={formElement.id}
+                    elementType={formElement.config.elementType}
+                    elementConfig={formElement.config.elementConfig}
+                    value={formElement.config.value} />
             ))}
             <Button clicked={this.orderHandler} btnType="Success">ORDER</Button>
         </form>);

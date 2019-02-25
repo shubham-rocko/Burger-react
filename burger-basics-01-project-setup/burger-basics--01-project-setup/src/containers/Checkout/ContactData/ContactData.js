@@ -66,10 +66,15 @@ class ContactData extends Component {
     orderHandler = (event) => {
         event.preventDefault();
         console.log(event, this.props.ingredients);
+        const formData = {};
+        for(let formElementIdentifier in this.state.orderForm){
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        }
         this.setState({ loading: true });
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.price
+            price: this.props.price,
+            orderData: formData
         }
         axios.post('/orders.json', order)
             .then((response) => {
@@ -82,6 +87,18 @@ class ContactData extends Component {
         alert('You Continue!!!');
     }
 
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedOrderedForm = {
+            ...this.state.orderForm
+        };
+        const updatedFormElement = {
+            ...updatedOrderedForm[inputIdentifier]
+        };
+        updatedFormElement.value = event.target.value;
+        updatedOrderedForm[inputIdentifier] = updatedFormElement;
+        this.setState({orderForm: updatedOrderedForm});
+    }
+
     render() {
         const formElementsArray = [];
         for (let key in this.state.orderForm) {
@@ -91,13 +108,14 @@ class ContactData extends Component {
             });
         }
 
-        var form = (<form>
+        var form = (<form onSubmit={this.orderHandler}>
             {formElementsArray.map(formElement => (
                 <Input
                     key={formElement.id}
                     elementType={formElement.config.elementType}
                     elementConfig={formElement.config.elementConfig}
-                    value={formElement.config.value} />
+                    value={formElement.config.value}
+                    changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
             ))}
             <Button clicked={this.orderHandler} btnType="Success">ORDER</Button>
         </form>);

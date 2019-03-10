@@ -9,6 +9,8 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import reducer from './store/reducer';
 
+const store = createStore(reducer);
+
 const app = (
     <Provider store={store}>
         <BrowserRouter>
@@ -16,8 +18,6 @@ const app = (
         </BrowserRouter>
     </Provider>
 )
-
-const store = createStore(reducer);
 
 ReactDOM.render(app, document.getElementById('root'));
 registerServiceWorker();

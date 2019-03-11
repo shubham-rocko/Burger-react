@@ -13,8 +13,7 @@ import * as burgerBuilderAction from '../../store/actions';
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
-    loading: false
+    purchasing: false
   };
 
   updatePurchaseState(ingredients) {
@@ -40,10 +39,7 @@ class BurgerBuilder extends Component {
   }
 
   componentDidMount() {
-    axios.get('https://react-my-burger-f052d.firebaseio.com/ingredients.json')
-      .then(response => {
-        this.setState({ ingredients: response.data })
-      }).catch(error => {})
+    
   }
 
   render() {
@@ -57,7 +53,7 @@ class BurgerBuilder extends Component {
 
     let orderSummary = null;
 
-    let burger = <Spinner />
+    let burger = this.state.error ? <p>Ingredients can't loaded</p> : <Spinner />
 
     if (this.props.ings) {
       burger = (
@@ -77,10 +73,6 @@ class BurgerBuilder extends Component {
         totalPrice={this.props.price}
         purchaseCanceled={this.purchaseCancelHandler}
         purchaseContinued={this.purchaseContinueHandler} />
-    }
-
-    if (this.state.loading) {
-      orderSummary = <Spinner />
     }
 
     return (
